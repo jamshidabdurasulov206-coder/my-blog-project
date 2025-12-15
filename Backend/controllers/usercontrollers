@@ -6,6 +6,17 @@ const jwt = require('jsonwebtoken');
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Name, email va password majburiy ❌"
+      });
+    }
+    const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({
+                message: "Siz allaqachon bu email bilan royxatdan otgansiz ❌"
+            });
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({ name, email, password: hashedPassword });
         res.status(201).json("User registered successfully ✅");
@@ -19,6 +30,11 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email va password majburiy ❌"
+      });
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User topilmadi ❌" });

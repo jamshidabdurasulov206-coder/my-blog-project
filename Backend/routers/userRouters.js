@@ -8,8 +8,8 @@ router.post('/login', loginUser);
 router.post('/register', registerUser);
 
 
-router.get('/protect', authMiddleware, (req, res)=>{
-    res.json({message: 'siz authorized foydalanuvchisiz ',user: req.user});
-});
+    router.get('/protect', authMiddleware, (req, res)=>{
+        res.json({message: 'siz authorized foydalanuvchisiz ',user: req.user});
+    });
 
 module.exports = router;
